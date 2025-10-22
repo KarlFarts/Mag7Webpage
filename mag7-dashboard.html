@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magnificent Seven - Market Power & Danger</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        background: #0f0f0f;
+        color: #e5e5e5;
+        overflow-x: hidden;
+    }
+    
+    /* HEADER */
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0 60px 0;
+        background: #0f0f0f;
+        position: relative;
+        z-index: 100;
+        margin-left: 300px;  /* ADD THIS - leaves space for left sidebar */
+        margin-right: 400px;  /* ADD THIS - leaves space for right sidebar */
+    }
+    
+    .title h1 {
+        font-size: 56px;
+        color: #ffffff;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        margin: 0;
+        text-align: center;
+    }
+    
+    /* PAGE LAYOUT */
+    .page-container {
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+    }
+    
+    /* LEFT SIDEBAR - BUTTONS */
+    .sidebar {
+        position: fixed;
+        left: 30px;
+        top: 0;
+        width: 240px;
+        z-index: 150;
+        padding-top: 50px;
+    }
+
+
+    /* REMOVE the scrollbar styling for left sidebar */
+    
+    .buttons-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .buttons-container.hovered .company-button:not(:hover):not(.active) {
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .buttons-container.hovered .company-button:hover ~ .company-button:not(.active) {
+        transform: translateY(30px);
+    }
+
+    .buttons-container.hovered .company-button:has(~ .company-button:hover):not(.active) {
+        transform: translateY(-30px);
+    }
+    
+    .company-button {
+        background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+        border: 2px solid #262626;
+        border-radius: 12px;
+        padding: 16px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        min-height: 60px;
+    }
+
+    .company-button .button-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .company-button .button-details {
+        display: none;
+        font-size: 12px;
+        color: #a3a3a3;
+        margin-top: 4px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .company-button:hover {
+        min-height: 90px;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        border-color: #ef4444;
+    }
+
+    .company-button:hover .button-details {
+        display: block;
+        opacity: 1;
+    }
+
+    .company-button.active {
+        background: #22c55e;
+        border-color: #22c55e;
+        min-height: 90px;
+    }
+
+    .company-button.active .button-details {
+        display: block;
+        opacity: 1;
+        color: #ffffff;
+    }
+
+    .company-button.active .button-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .company-button.active .button-name {
+        font-size: 14px;
+        color: #ffffff;
+    }
+    
+    .button-icon {
+        font-size: 1.5em;
+    }
+    
+    .button-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.3px;
+    }
+    
+    /* MIDDLE - CHART AREA */
+    .content-area {
+        margin-left: 300px;  /* was 340px */
+        margin-right: 400px;  /* was 380px, give right sidebar more room */
+        max-width: none;
+    }
+    
+    .chart-section {
+        width: 100%;
+        margin: 0 auto 40px;
+        padding: 30px;
+        background: rgba(26, 26, 26, 0.3);
+        border-radius: 16px;
+        border: 1px solid #262626;
+    }
+    
+    .chart-container {
+        background: transparent;
+        width: 100%;
+        height: 500px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .chart-title {
+        font-size: 20px;
+        color: #ef4444;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    #marketCapChart {
+        position: relative;
+        z-index: 2;
+    }
+    
+/* RIGHT SIDEBAR - EXPLAINER - COLLAPSIBLE */
+.explainer-box {
+    position: fixed;
+    right: 30px;
+    top: 50px;
+    width: 360px;
+    background: rgba(15, 15, 15, 0.95);
+    border: 2px solid #ef4444;
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(239, 68, 68, 0.2);
+    z-index: 150;
+    overflow: hidden;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.explainer-box.collapsed {
+    width: 280px;
+    height: 70px;
+    cursor: pointer;
+}
+
+.explainer-box.collapsed:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 80px rgba(239, 68, 68, 0.4);
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.explainer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    cursor: pointer;
+    user-select: none;
+    height: 100%;
+}
+
+.explainer-box.collapsed .explainer-header {
+    padding: 0;
+    justify-content: center;
+}
+
+.explainer-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.explainer-box.collapsed .explainer-header-left {
+    justify-content: center;
+    text-align: center;
+}
+
+.explainer-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.explainer-header-title {
+    font-size: 18px;
+    color: #ef4444;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.explainer-box.collapsed .explainer-header-title {
+    font-size: 14px;
+}
+
+.chevron {
+    font-size: 20px;
+    color: #ef4444;
+    transition: transform 0.3s ease;
+    line-height: 1;
+}
+
+.explainer-box:not(.collapsed) .chevron {
+    transform: rotate(180deg);
+}
+
+.explainer-box.collapsed .chevron {
+    display: none;
+}
+
+.explainer-content-wrapper {
+    padding: 0 40px 40px 40px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.explainer-box:not(.collapsed) .explainer-content-wrapper {
+    max-height: 2000px;
+    opacity: 1;
+}
+    
+    .danger-content {
+        display: none;
+    }
+    
+    .danger-content.active {
+        display: block;
+    }
+    
+    .danger-content h3 {
+        color: #ffffff;
+        font-size: 1.3em;  /* was 1.2em - bigger */
+        font-weight: 700;
+        margin-bottom: 25px;  /* was 20px - MORE space */
+        margin-top: 15px;  /* was 10px */
+    }
+    
+    .danger-content p {
+        margin-bottom: 30px;  /* was 20px - MORE space */
+        line-height: 1.9;  /* was 1.8 - more line spacing */
+        color: #f5f5f5;
+    }
+    
+    .danger-list {
+        list-style: none;
+        margin-left: 0;
+    }
+    
+    .danger-list li {
+        padding: 20px 0 20px 45px;  /* was 16px - MORE vertical padding */
+        position: relative;
+        border-bottom: 1px solid #444;
+        line-height: 1.8;  /* was 1.7 - more line height */
+        margin-bottom: 22px;  /* was 18px - MORE space between items */
+        transition: all 0.2s ease;
+        font-size: 14px;  /* was 13px - slightly bigger */
+        word-wrap: break-word;
+        color: #f5f5f5;
+    }
+    
+    .danger-list li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .danger-list li::before {
+        content: '⚠️';
+        position: absolute;
+        left: 0;
+        top: 16px;
+        font-size: 1.1em;  /* was 1.2em, slightly smaller */
+    }
+    
+    .danger-list li strong {
+        font-size: 16px;  /* was 15px */
+        font-weight: 700;
+        color: #ffffff;
+        display: block;
+        margin-bottom: 10px;  /* was 8px - MORE space */
+        line-height: 1.4;
+    }
+    
+    .milestone {
+        background: #1f1f1f;
+        padding: 12px 15px;
+        border-left: 3px solid #ef4444;
+        margin: 15px 0;
+        font-size: 0.9em;
+        color: #e5e5e5;
+    }
+    
+    .milestone-date {
+        color: #ef4444;
+        font-weight: 600;
+    }
+    
+    /* SOURCES SECTION - EXACT MATCH TO CHART */
+    .sources-section {
+        margin-left: 300px;
+        margin-right: 400px;  /* MATCH content-area right margin */
+        margin-top: 40px;
+        margin-bottom: 60px;
+        padding: 30px;
+        background: rgba(26, 26, 26, 0.3);
+        border-radius: 16px;
+        border: 1px solid #262626;
+    }
+
+    .sources-title {
+        font-size: 20px;
+        color: #ef4444;
+        font-weight: 600;
+        margin-bottom: 30px;  /* MORE space like chart title */
+        text-align: left;  /* ADD THIS */
+    }
+
+    .sources-list {
+        font-size: 0.9em;
+        color: #e5e5e5;
+        line-height: 1.8;
+        list-style: none;  /* REMOVE default bullets */
+        padding-left: 0;  /* REMOVE default padding */
+    }
+
+    .sources-list li {
+        margin-bottom: 15px;  /* MORE space between items */
+        padding-left: 20px;  /* ADD indent */
+        position: relative;
+    }
+
+    .sources-list li::before {
+        content: '•';
+        color: #ef4444;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+    }
+    
+    /* RESPONSIVE - STACK ON SMALLER SCREENS */
+    @media (max-width: 1400px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .content-area {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px;
+        }
+
+        .explainer-box {
+            position: static;
+            width: 100%;
+            max-width: 1200px;
+            margin: 60px auto;
+            max-height: none;
+        }
+
+        .sources-section {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <canvas id="animatedLogoCanvas" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -2; display: none;"></canvas>
+        <div class="header">
+            <div class="header-top">
+                <div class="title">
+                    <h1>MAGNIFICENT 7 STOCKS</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="buttons-container">
+                <div class="company-button active" data-company="total">
+                    <div class="button-top">
+                        <div class="button-icon">📊</div>
+                        <div class="button-name">TOTAL WEALTH</div>
+                    </div>
+                    <div class="button-details">
+                        MAG7 - Combined Value
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="apple">
+                    <div class="button-top">
+                        <div class="button-icon">🍎</div>
+                        <div class="button-name">Apple</div>
+                    </div>
+                    <div class="button-details">
+                        AAPL - $225.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="microsoft">
+                    <div class="button-top">
+                        <div class="button-icon">💻</div>
+                        <div class="button-name">Microsoft</div>
+                    </div>
+                    <div class="button-details">
+                        MSFT - $450.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="google">
+                    <div class="button-top">
+                        <div class="button-icon">🔍</div>
+                        <div class="button-name">Alphabet</div>
+                    </div>
+                    <div class="button-details">
+                        GOOGL - $180.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="amazon">
+                    <div class="button-top">
+                        <div class="button-icon">📦</div>
+                        <div class="button-name">Amazon</div>
+                    </div>
+                    <div class="button-details">
+                        AMZN - $200.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="nvidia">
+                    <div class="button-top">
+                        <div class="button-icon">🎮</div>
+                        <div class="button-name">NVIDIA</div>
+                    </div>
+                    <div class="button-details">
+                        NVDA - $150.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="meta">
+                    <div class="button-top">
+                        <div class="button-icon">👤</div>
+                        <div class="button-name">Meta</div>
+                    </div>
+                    <div class="button-details">
+                        META - $600.00
+                    </div>
+                </div>
+
+                <div class="company-button" data-company="tesla">
+                    <div class="button-top">
+                        <div class="button-icon">⚡</div>
+                        <div class="button-name">Tesla</div>
+                    </div>
+                    <div class="button-details">
+                        TSLA - $300.00
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="chart-section">
+                <div class="chart-container">
+                    <div class="chart-title" id="chartTitle">Magnificent Seven: Combined Market Capitalization (2015-2025)</div>
+                    <canvas id="marketCapChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+<div class="explainer-box collapsed">
+    <div class="explainer-header">
+        <div class="explainer-header-left">
+            <div class="explainer-icon">⚠️</div>
+            <div class="explainer-header-title" id="dangerTitle">What is the Magnificent Seven?</div>
+        </div>
+        <div class="chevron">▼</div>
+    </div>
+
+    <div class="explainer-content-wrapper">
+        <div class="danger-content active" id="danger-total">
+            <p style="margin-bottom: 20px; line-height: 1.8; color: #e5e5e5;">
+                The "Magnificent Seven" refers to the seven largest technology companies by market capitalization: Apple, Microsoft, Alphabet (Google), Amazon, NVIDIA, Meta (Facebook), and Tesla. As of October 2025, these companies collectively represent over <strong style="color: #ef4444;">$20.9 trillion in market value</strong> — roughly <strong style="color: #ef4444;">40% of the entire S&P 500</strong>.
+            </p>
+
+            <h3>⚠️ Systemic Risks & Market Concentration</h3>
+            <ul class="danger-list">
+                <li><strong>Index Concentration Risk:</strong> The Magnificent Seven account for approximately 40% of S&P 500 market cap, meaning passive index investors are heavily concentrated in just 7 stocks</li>
+                <li><strong>Correlation Danger:</strong> When these stocks move together, they can create massive market swings affecting millions of retirement accounts and institutional portfolios</li>
+                <li><strong>Valuation Disconnect:</strong> Combined market cap exceeds the GDP of every country except the US and China, raising questions about sustainable valuations</li>
+                <li><strong>AI Bubble Risk:</strong> Much of the recent growth is tied to AI expectations; if the AI revolution disappoints, trillions in market value could evaporate</li>
+                <li><strong>Regulatory Threats:</strong> All seven face antitrust investigations, potentially leading to breakups or forced divestitures that could destroy shareholder value</li>
+                <li><strong>Geopolitical Vulnerability:</strong> Heavy reliance on China for manufacturing, sales, and supply chains creates massive geopolitical risk exposure</li>
+                <li><strong>Interest Rate Sensitivity:</strong> Tech valuations are extremely sensitive to interest rates; rate increases could trigger massive sell-offs</li>
+            </ul>
+
+            <div class="milestone">
+                <span class="milestone-date">October 9, 2025:</span> Combined market cap reached record $20.9 trillion, highlighting unprecedented market concentration
+            </div>
+        </div>
+
+        <!-- Keep all other danger-content divs exactly as they are -->
+        <div class="danger-content" id="danger-apple">
+            <!-- existing content -->
+        </div>
+        <!-- etc for all companies -->
+    </div>
+</div>
+
+        <div class="sources-section">
+            <div class="sources-title">📚 Sources & References</div>
+            <ul class="sources-list">
+                <li><strong>Primary Data Sources:</strong> Voronoi App, Macrotrends, CompaniesMarketCap, Yahoo Finance, company SEC filings (10-K, 10-Q)</li>
+                <li><a href="https://www.voronoiapp.com/markets/-Magnificent-Seven-Market-Cap-Reaches-Record-209-Trillion-in-October-2025-3004" target="_blank">Voronoi App: Magnificent Seven Market Cap Reaches Record $20.9 Trillion (October 2025)</a></li>
+                <li><strong>NVIDIA $4T Milestone:</strong> Investopedia (July 9, 2025) - First company to reach $4T intraday valuation</li>
+                <li><strong>Microsoft $4T Milestone:</strong> The Verge (July 31, 2025) - First sustained $4T market cap</li>
+                <li><strong>Alphabet $3T Milestone:</strong> Reuters (September 15, 2025) - Hit $3T market cap for first time</li>
+                <li><strong>S&P 500 Concentration Data:</strong> Morningstar, S&P Global - Top 10 stocks represent ~40% of S&P 500 market cap</li>
+                <li><strong>Valuation Metrics:</strong> Derived from company quarterly earnings reports, trailing-twelve-month revenue and net income</li>
+                <li><strong>Regulatory Information:</strong> DOJ filings, FTC documents, EU Commission rulings, company disclosure statements</li>
+                <li><strong>Market Data:</strong> October 2025 market cap figures from real-time financial data providers</li>
+                <li><strong>Economic Context:</strong> US GDP data from Bureau of Economic Analysis, Federal Reserve economic data</li>
+            </ul>
+
+            <div style="margin-top: 20px; padding: 15px; background: #1f1f1f; border-left: 3px solid #ef4444; font-size: 0.85em; color: #e5e5e5;">
+                <strong style="color: #ff4444;">⚠️ Disclaimer:</strong> This analysis is for educational and informational purposes only. Not financial advice. Markets are volatile and past performance does not guarantee future results. All data current as of October 2025. Consult qualified financial professionals before making investment decisions.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Logo animation setup
+        const logoCanvas = document.getElementById('animatedLogoCanvas');
+        const logoCtx = logoCanvas.getContext('2d');
+        const img = new Image();
+        img.src = '/Users/elliottzelenak/Downloads/Mag 7/Final Logos/WHITE skull cash logo.png';
+        img.crossOrigin = 'anonymous';
+
+        img.onload = function() {
+            logoCanvas.width = img.width;
+            logoCanvas.height = img.height;
+            logoCanvas.style.display = 'block';
+
+            const lineHeight = 1; // Height of each line in pixels
+            const totalLines = img.height;
+            let currentLine = 0;
+
+            function drawLine() {
+                if (currentLine < totalLines) {
+                    // Draw the current line
+                    logoCtx.drawImage(img, 0, currentLine, img.width, lineHeight, 0, currentLine, img.width, lineHeight);
+                    currentLine++;
+                    setTimeout(drawLine, 400); // 0.4 second delay
+                }
+            }
+
+            // Start animation immediately
+            drawLine();
+        };
+
+        // Historical market cap data (in trillions)
+        const marketCapData = {
+            total: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [1.8, 2.2, 2.9, 4.1, 3.9, 5.8, 8.2, 9.5, 7.8, 12.5, 20.9],
+                color: '#ef4444',
+                stockCode: 'MAG7',
+                currentPrice: null
+            },
+            apple: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.72, 0.53, 0.74, 0.89, 0.75, 1.39, 2.08, 2.91, 2.09, 2.95, 3.58],
+                color: '#555555',
+                stockCode: 'AAPL',
+                currentPrice: 225.00
+            },
+            microsoft: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.38, 0.42, 0.51, 0.71, 0.78, 1.21, 1.68, 2.53, 1.82, 3.12, 4.02],
+                color: '#00a4ef',
+                stockCode: 'MSFT',
+                currentPrice: 450.00
+            },
+            google: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.37, 0.49, 0.58, 0.73, 0.74, 0.92, 1.39, 1.92, 1.15, 1.78, 3.12],
+                color: '#4285f4',
+                stockCode: 'GOOGL',
+                currentPrice: 180.00
+            },
+            amazon: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.18, 0.25, 0.39, 0.69, 0.73, 0.93, 1.63, 1.69, 0.88, 1.52, 2.15],
+                color: '#ff9900',
+                stockCode: 'AMZN',
+                currentPrice: 200.00
+            },
+            nvidia: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.01, 0.02, 0.06, 0.13, 0.08, 0.15, 0.32, 0.62, 0.48, 1.22, 3.95],
+                color: '#76b900',
+                stockCode: 'NVDA',
+                currentPrice: 150.00
+            },
+            meta: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.22, 0.31, 0.40, 0.54, 0.45, 0.59, 0.84, 0.56, 0.38, 0.98, 1.48],
+                color: '#0668e1',
+                stockCode: 'META',
+                currentPrice: 600.00
+            },
+            tesla: {
+                labels: ['Jan 2015', 'Jan 2016', 'Jan 2017', 'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022', 'Jan 2023', 'Jan 2024', 'Oct 2025'],
+                data: [0.03, 0.03, 0.04, 0.05, 0.06, 0.08, 0.63, 0.93, 0.39, 0.61, 1.60],
+                color: '#ef4444',
+                stockCode: 'TSLA',
+                currentPrice: 300.00
+            }
+        };
+        
+        // Function to convert hex to rgba
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Initialize chart
+        const ctx = document.getElementById('marketCapChart').getContext('2d');
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: marketCapData.total.labels,
+                datasets: [{
+                    label: 'Combined Market Cap',
+                    data: marketCapData.total.data,
+                    borderColor: marketCapData.total.color,
+                    backgroundColor: hexToRgba(marketCapData.total.color, 0.05),
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 2.2,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#e5e5e5',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ef4444',
+                        bodyColor: '#e5e5e5',
+                        borderColor: '#ef4444',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#a3a3a3',
+                            callback: function(value) {
+                                return '$' + value + 'T';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#a3a3a3'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Button click handlers
+        const buttons = document.querySelectorAll('.company-button');
+        const buttonsContainer = document.querySelector('.buttons-container');
+        const dangerContents = document.querySelectorAll('.danger-content');
+        const chartTitle = document.getElementById('chartTitle');
+        const dangerTitle = document.getElementById('dangerTitle');
+
+        buttons.forEach(button => {
+            // Hover event handlers for button shifting
+            button.addEventListener('mouseenter', () => {
+                buttonsContainer.classList.add('hovered');
+            });
+
+            button.addEventListener('mouseleave', () => {
+                buttonsContainer.classList.remove('hovered');
+            });
+
+            button.addEventListener('click', () => {
+                const company = button.dataset.company;
+
+                // Update active button
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                    // Reset button details for non-active buttons
+                    const details = btn.querySelector('.button-details');
+                    if (details) {
+                        if (company === 'total') {
+                            details.textContent = 'MAG7 - Combined Value';
+                        } else {
+                            const stockData = marketCapData[btn.dataset.company];
+                            if (stockData && stockData.currentPrice) {
+                                details.textContent = `${stockData.stockCode} - $${stockData.currentPrice.toFixed(2)}`;
+                            }
+                        }
+                    }
+                });
+                button.classList.add('active');
+
+                // Update active button content for two-line layout
+                if (company !== 'total') {
+                    const stockData = marketCapData[company];
+                    const details = button.querySelector('.button-details');
+                    const marketCap = stockData.data[stockData.data.length - 1];
+                    details.innerHTML = `${button.querySelector('.button-name').textContent} - $${marketCap.toFixed(3)}T<br>${stockData.stockCode} - $${stockData.currentPrice.toFixed(2)}`;
+                }
+
+                // Update danger content
+                dangerContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`danger-${company}`).classList.add('active');
+
+                // Update chart data without re-rendering
+                const data = marketCapData[company];
+                chart.data.labels = data.labels;
+                chart.data.datasets[0].data = data.data;
+                chart.data.datasets[0].borderColor = data.color;
+                chart.data.datasets[0].backgroundColor = hexToRgba(data.color, 0.05);
+
+                // Update titles
+                if (company === 'total') {
+                    chartTitle.textContent = 'Magnificent Seven: Combined Market Capitalization (2015-2025)';
+                    dangerTitle.textContent = 'What is the Magnificent Seven?';
+                    chart.data.datasets[0].label = 'Combined Market Cap';
+                } else {
+                    const companyName = button.querySelector('.button-name').textContent;
+                    chartTitle.textContent = `${companyName}: Market Capitalization Growth (2015-2025)`;
+                    dangerTitle.textContent = `Risks & Dangers: ${companyName}`;
+                    chart.data.datasets[0].label = `${companyName} Market Cap`;
+                }
+
+                // Update chart with minimal re-rendering
+                chart.update('none');
+            });
+        });
+// Toggle explainer box
+const explainerBox = document.querySelector('.explainer-box');
+const explainerHeader = document.querySelector('.explainer-header');
+
+explainerHeader.addEventListener('click', () => {
+    explainerBox.classList.toggle('collapsed');
+});
+    </script>
+</body>
+</html>
