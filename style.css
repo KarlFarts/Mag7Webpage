@@ -73,16 +73,16 @@ body {
 .buttons-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
 }
 
 .company-button {
     background: var(--brutal-gray);
     border: 4px solid var(--brutal-border);
     border-radius: 0;
-    padding: 16px 20px;
+    padding: 16px 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -91,14 +91,17 @@ body {
 
 .company-button:hover {
     border-color: var(--brutal-red);
-    transform: translateX(12px);
+    transform: translateX(12px) scale(1.02);
     background: #000000;
+    box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
 }
 
 .company-button.active {
     background: #000000;
     border-color: var(--brutal-red);
     border-width: 4px;
+    transform: translateX(8px);
+    box-shadow: 0 2px 8px rgba(255, 69, 0, 0.4);
 }
 
 .company-button:hover .button-name {
@@ -125,7 +128,7 @@ body {
     color: #ffffff;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    transition: color 0.2s ease;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
 }
 
@@ -167,10 +170,27 @@ body {
     z-index: 1;
     pointer-events: none;
     display: none;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.watermark.white-filter {
+    filter: brightness(0) invert(1);
 }
 
 .watermark.visible {
     display: block;
+    animation: watermarkFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes watermarkFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 0.15;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .chart-title {
@@ -347,12 +367,14 @@ body {
     gap: 10px;
     text-align: left;
     cursor: default;
-    transition: all 0.2s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-box:hover {
     border-color: var(--brutal-red);
     background: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 69, 0, 0.2);
 }
 
 .info-content {
@@ -364,9 +386,35 @@ body {
 
 .info-section {
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    gap: 15px;
     width: 100%;
-    justify-content: space-between;
+}
+
+.info-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.info-paragraph {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+    text-align: justify;
 }
 
 .info-metric {

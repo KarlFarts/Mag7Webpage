@@ -44,7 +44,7 @@ const marketCapData = {
 const tickerData = {
     apple: [{ icon: '<img src="assets/apple.png" alt="Apple logo" class="ticker-logo">', symbol: 'AAPL', price: '$150', cap: '$3.58T' }],
     microsoft: [{ icon: '<img src="assets/microsoft.png" alt="Microsoft logo" class="ticker-logo">', symbol: 'MSFT', price: '$300', cap: '$4.02T' }],
-    google: [{ icon: '<img src="assets/placeholder.txt" alt="Google logo placeholder" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' }],
+    google: [{ icon: '<img src="assets/alphabet.png" alt="Alphabet logo" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' }],
     amazon: [{ icon: '<img src="assets/aws.png" alt="Amazon Web Services logo" class="ticker-logo">', symbol: 'AMZN', price: '$130', cap: '$2.15T' }],
     nvidia: [{ icon: '<img src="assets/nvidia.png" alt="NVIDIA logo" class="ticker-logo">', symbol: 'NVDA', price: '$500', cap: '$3.95T' }],
     meta: [{ icon: '<img src="assets/meta.png" alt="Meta logo" class="ticker-logo">', symbol: 'META', price: '$300', cap: '$1.48T' }],
@@ -52,7 +52,7 @@ const tickerData = {
     total: [
         { icon: '<img src="assets/apple.png" alt="Apple logo" class="ticker-logo">', symbol: 'AAPL', price: '$150', cap: '$3.58T' },
         { icon: '<img src="assets/microsoft.png" alt="Microsoft logo" class="ticker-logo">', symbol: 'MSFT', price: '$300', cap: '$4.02T' },
-        { icon: '<img src="assets/placeholder.txt" alt="Google logo placeholder" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' },
+        { icon: '<img src="assets/alphabet.png" alt="Alphabet logo" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' },
         { icon: '<img src="assets/aws.png" alt="Amazon Web Services logo" class="ticker-logo">', symbol: 'AMZN', price: '$130', cap: '$2.15T' },
         { icon: '<img src="assets/nvidia.png" alt="NVIDIA logo" class="ticker-logo">', symbol: 'NVDA', price: '$500', cap: '$3.95T' },
         { icon: '<img src="assets/meta.png" alt="Meta logo" class="ticker-logo">', symbol: 'META', price: '$300', cap: '$1.48T' },
@@ -67,50 +67,54 @@ function hexToRgba(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+const companyContent = {
+    total: {
+        header: "OUR ECONOMIC MIGHT OUTSHINES CHINA!!!1!!!!",
+        paragraph: "They don’t call us the Magnificent Seven for nothing more than our #Grind – in fact, our Market Cap™ makes the regulator “nerds” look like WEAK wimps! Just look at us – our market cap OUTSHINES the United Kingdom, France, Japan (actually, the entire European Union), and even India. But that’s nothing – we’re currently beating the entire economy of China! Take that, Grandpa Xi! (And we’re coming for you, too, America!) We often spend more money on lobbying than big oil (aka, grandpa silicon) and pharmaceutical corporations. Think about this great investment! Those stories about the one-lobbyist-per-five-member-of-congress? Absolutely true, but it is only because we care! And if it were not our investment/thought leaders – the Vanguard Group and Blackrock – we wouldn’t be able to show our care to our consumers. Thank you, President Trump, for helping American consumers thrive!"
+    },
+    apple: {
+        header: "The iPhone Empire's Hidden Vulnerabilities",
+        paragraph: "While Apple dominates the premium smartphone market with its ecosystem lock-in, the company's future growth depends entirely on iPhone sales which represent over 50% of revenue. As emerging markets saturate and competition from Chinese manufacturers intensifies, Apple's premium pricing strategy faces unprecedented pressure. The App Store's 30% commission model, already under regulatory scrutiny, could be dismantled by EU and US antitrust actions, potentially costing billions in annual revenue."
+    },
+    microsoft: {
+        header: "AI's Double-Edged Sword for the Software Giant",
+        paragraph: "Microsoft's transformation into an AI-first company through its OpenAI partnership has fueled explosive growth, but the strategy carries immense risks. The company's $13+ billion investment in OpenAI remains largely unmonetized while infrastructure costs for AI data centers skyrocket. Azure cloud growth is decelerating as the market matures, and Microsoft's dependence on a handful of hyperscalers for AI chips creates dangerous concentration risk."
+    },
+    google: {
+        header: "Search Monopoly Under Siege",
+        paragraph: "Alphabet's 90%+ dominance of search advertising generates unparalleled cash flow, but the foundation is cracking. AI-powered alternatives like ChatGPT and Perplexity threaten Google's core business model, while the Department of Justice antitrust case could force divestitures of Chrome, Android, or the entire ad business. With 80% of revenue tied to advertising, any disruption to this ecosystem would be catastrophic."
+    },
+    amazon: {
+        header: "E-commerce Margins vs. Cloud Dominance",
+        paragraph: "Amazon's dual business model creates constant tension between razor-thin retail margins and highly profitable cloud services. The e-commerce division operates at 2-3% margins, vulnerable to economic downturns and labor pressures from unionization efforts. AWS, while dominant, faces slowing growth as enterprises complete their cloud migrations and competitors gain ground. This margin compression threatens Amazon's ability to sustain its aggressive expansion."
+    },
+    nvidia: {
+        header: "AI Bubble or Semiconductor Revolution?",
+        paragraph: "NVIDIA's stock price assumes perpetual AI growth, but the company's valuation now exceeds the market caps of Intel, AMD, and TSMC combined. While data center sales boom, NVIDIA faces existential threats: customers could develop their own AI chips, US export restrictions eliminate 25% of addressable markets, and any slowdown in AI hype could trigger a devastating correction. The company's future depends on AI becoming the computing paradigm it claims to be."
+    },
+    meta: {
+        header: "Social Media's Adolescence Crisis",
+        paragraph: "Meta's platforms are losing their grip on younger users as TikTok, Snapchat, and BeReal capture Gen Z attention. The metaverse vision, costing $40+ billion annually, shows no path to profitability while Apple's privacy changes have already cost $10+ billion in ad revenue. With advertising as the sole revenue driver, Meta's inability to evolve beyond its 2010s social media model creates an existential crisis for the world's largest social network."
+    },
+    tesla: {
+        header: "Autonomous Driving Dreams vs. Automotive Reality",
+        paragraph: "Tesla's market cap assumes Full Self-Driving will revolutionize transportation, but the technology remains years from commercial viability. Meanwhile, every major automaker now produces competitive EVs, forcing Tesla into repeated price cuts that erode margins from 30% to the low 20s. The company's growth depends on robotaxis materializing, but competition from traditional automakers and new EV startups threatens Tesla's premium positioning."
+    }
+};
+
 function updateInfoBox(company) {
     const infoContent = document.querySelector('.info-content');
     infoContent.innerHTML = '';
 
-    if (company === 'total') {
-        // For total view, show combined market cap and key metrics
-        const totalItem = document.createElement('div');
-        totalItem.className = 'info-section';
-        totalItem.innerHTML = `
-            <div class="info-metric">
-                <span class="metric-label">TOTAL MARKET CAP</span>
-                <span class="metric-value">$20.9T</span>
-            </div>
-            <div class="info-metric">
-                <span class="metric-label">S&P 500 SHARE</span>
-                <span class="metric-value">40%</span>
-            </div>
-            <div class="info-metric">
-                <span class="metric-label">GDP EQUIVALENT</span>
-                <span class="metric-value">US + China</span>
-            </div>
-        `;
-        infoContent.appendChild(totalItem);
-    } else {
-        // For individual companies, show company-specific metrics
-        const companyData = tickerData[company][0]; // Get first item since individual companies have single entry
-        const companyItem = document.createElement('div');
-        companyItem.className = 'info-section';
-        companyItem.innerHTML = `
-            <div class="info-metric">
-                <span class="metric-label">MARKET CAP</span>
-                <span class="metric-value">${companyData.cap}</span>
-            </div>
-            <div class="info-metric">
-                <span class="metric-label">STOCK SYMBOL</span>
-                <span class="metric-value">${companyData.symbol}</span>
-            </div>
-            <div class="info-metric">
-                <span class="metric-label">CURRENT PRICE</span>
-                <span class="metric-value">${companyData.price}</span>
-            </div>
-        `;
-        infoContent.appendChild(companyItem);
-    }
+    // Use consistent header and paragraph layout for all views including total
+    const content = companyContent[company];
+    const companyItem = document.createElement('div');
+    companyItem.className = 'info-section';
+    companyItem.innerHTML = `
+        <div class="info-header">${content.header}</div>
+        <div class="info-paragraph">${content.paragraph}</div>
+    `;
+    infoContent.appendChild(companyItem);
 }
 
 // Initialize Chart
@@ -139,6 +143,17 @@ options: {
     responsive: true,
     maintainAspectRatio: true,
     aspectRatio: 2.0,
+    animation: {
+        duration: 1000,
+        easing: 'easeInOutQuart'
+    },
+    transitions: {
+        active: {
+            animation: {
+                duration: 800
+            }
+        }
+    },
     layout: {
         padding: {
             left: 0,
@@ -159,18 +174,26 @@ options: {
             bodyColor: '#ffffff',
             borderColor: '#ff4500',
             borderWidth: 2,
-            padding: 12
+            padding: 12,
+            callbacks: {
+                label: function(context) {
+                    let value = context.parsed.y;
+                    return '$' + (value * 1000000000000).toLocaleString();
+                }
+            }
         }
     },
     scales: {
         y: {
             beginAtZero: true,
+            max: 21,
             ticks: {
                 color: '#ffffff',
-                font: { size: 12, weight: 'bold' },
+                font: { size: 10, weight: 'bold' },
                 callback: function(value) {
-                    return '$' + value + 'T';
-                }
+                    return '$' + (value * 1000000000000).toLocaleString();
+                },
+                stepSize: 3
             },
             grid: {
                 color: '#333333',
@@ -207,6 +230,17 @@ const watermark = document.querySelector('.watermark');
 const explainerBox = document.querySelector('.explainer-box');
 const explainerTitle = document.querySelector('.explainer-title');
 
+const iconMap = {
+    total: 'assets/WHITE skull cash logo.png',
+    apple: 'assets/apple.png',
+    microsoft: 'assets/microsoft.png',
+    google: 'assets/alphabet.png',
+    amazon: 'assets/aws.png',
+    nvidia: 'assets/nvidia.png',
+    meta: 'assets/meta.png',
+    tesla: 'assets/TESLA.png'
+};
+
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         const company = button.dataset.company;
@@ -226,19 +260,37 @@ buttons.forEach(button => {
 
         updateInfoBox(company);
 
+        // Set dynamic watermark
+        watermark.src = iconMap[company];
+        watermark.classList.add('visible');
+
+        // Apply white filter for Apple logo
+        if (company === 'apple') {
+            watermark.classList.add('white-filter');
+        } else {
+            watermark.classList.remove('white-filter');
+        }
+
+        // Update y-axis scaling based on company
+        if (company === 'total') {
+            chart.options.scales.y.max = 21;
+            chart.options.scales.y.ticks.stepSize = 3;
+        } else {
+            delete chart.options.scales.y.max;
+            chart.options.scales.y.ticks.stepSize = 0.5;
+        }
+
         if (company === 'total') {
             dynamicTitle.innerHTML = '<span class="stock-code">OUR</span> Combined Market Capitalization';
             dangerTitle.textContent = '▼ WHAT IS THE MAGNIFICENT SEVEN?';
-            watermark.classList.add('visible');
         } else {
             const stockCode = button.dataset.stock;
             dynamicTitle.innerHTML = `<span class="stock-code">${stockCode}</span> Market Capitalization`;
             const companyName = button.querySelector('.button-name').textContent;
             dangerTitle.textContent = `▼ RISKS & DANGERS: ${companyName.toUpperCase()}`;
-            watermark.classList.remove('visible');
         }
 
-        chart.update('none');
+        chart.update('active');
     });
 });
 
@@ -252,3 +304,7 @@ explainerTitle.addEventListener('click', () => {
 
 // Initialize info box with total data
 updateInfoBox('total');
+
+// Initialize watermark with white skull logo for default total view
+watermark.src = 'assets/WHITE skull cash logo.png';
+watermark.classList.add('visible');
