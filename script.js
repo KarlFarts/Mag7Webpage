@@ -294,12 +294,16 @@ buttons.forEach(button => {
     });
 });
 
-// Explainer Box Toggle
-explainerTitle.addEventListener('click', () => {
-    explainerBox.classList.toggle('collapsed');
-    const isCollapsed = explainerBox.classList.contains('collapsed');
-    const currentText = dangerTitle.textContent.substring(2);
-    dangerTitle.textContent = (isCollapsed ? '▼ ' : '▲ ') + currentText;
+// Explainer Box Toggle - Now handles individual collapsible sections
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('explainer-toggle-title')) {
+        const toggleTitle = e.target;
+        const collapsibleContent = toggleTitle.nextElementSibling;
+        collapsibleContent.classList.toggle('collapsed');
+        const isCollapsed = collapsibleContent.classList.contains('collapsed');
+        const currentText = toggleTitle.textContent;
+        toggleTitle.textContent = (isCollapsed ? '▼ ' : '▲ ') + currentText;
+    }
 });
 
 // Initialize info box with total data
