@@ -26,7 +26,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 0 10px 0;
+    padding: 20px 0 15px 0;
     background: #000000;
     position: relative;
     z-index: 5;
@@ -55,33 +55,33 @@ body {
 .sidebar {
     position: fixed;
     left: 20px;
-    top: 240px;
-    width: 200px;
+    top: 145px;
+    width: 210px;
     z-index: 150;
 }
 
 .buttons-container {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
 }
 
 .company-button {
     background: var(--brutal-gray);
-    border: 3px solid var(--brutal-border);
+    border: 4px solid var(--brutal-border);
     border-radius: 0;
-    padding: 12px 20px;
+    padding: 16px 20px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-align: left;
 }
 
 .company-button:hover {
     border-color: var(--brutal-red);
-    transform: translateX(8px);
+    transform: translateX(12px);
     background: #000000;
 }
 
@@ -91,23 +91,28 @@ body {
     border-width: 4px;
 }
 
+.company-button:hover .button-name {
+    color: var(--brutal-red);
+}
+
 .button-icon {
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 .button-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: #ffffff;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
+    transition: color 0.2s ease;
 }
 
 .content-area {
-    margin-left: 240px;
-    margin-right: 280px;
+    margin-left: 245px;
+    margin-right: 290px;
     max-width: none;
-    margin-top: 40px;
+    margin-top: 90px;
 }
 
 .chart-section {
@@ -123,7 +128,7 @@ body {
     background: #000000;
     width: 100%;
     max-width: 100%;
-    height: 380px;
+    height: 510px;
     position: relative;
     overflow: hidden;
     border: none;
@@ -151,7 +156,8 @@ body {
     font-size: 18px;
     color: var(--brutal-red);
     font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+    margin-top: 0;
     text-align: left;
     padding: 0;
     text-transform: uppercase;
@@ -161,14 +167,22 @@ body {
 }
 
 #marketCapChart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
     position: relative;
     z-index: 10;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .explainer-box {
     position: fixed;
     right: 20px;
-    top: 240px;
+    top: 145px;
     width: 260px;
     background: var(--brutal-gray);
     border: 4px solid var(--brutal-red);
@@ -176,32 +190,33 @@ body {
     padding: 12px 20px;
     box-shadow: none;
     z-index: 150;
-    height: calc(100vh - 300px);
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
-    transition: height 0.3s ease;
 }
 
 .explainer-box.collapsed {
     height: 60px;
+    max-height: 60px;
     overflow: hidden;
 }
 
 .explainer-title {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--brutal-red);
     font-weight: 900;
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     border-bottom: 3px solid var(--brutal-red);
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     cursor: pointer;
     word-wrap: break-word;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .danger-content {
@@ -300,7 +315,7 @@ body {
     padding: 8px 0;
     z-index: 200;
     overflow: hidden;
-    margin-top: 30px;
+    margin-top: 12px;
 }
 
 .ticker-content {
@@ -354,10 +369,10 @@ body {
     }
 
     .explainer-box {
-        position: static;
+        position: relative;
         width: 100%;
-        max-width: 1200px;
-        margin: 60px auto;
+        max-width: 100%;
+        margin-top: 40px;
     }
 
     .header {

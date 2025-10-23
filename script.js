@@ -103,55 +103,71 @@ let chart = new Chart(ctx, {
             pointHoverRadius: 8,
             pointBackgroundColor: marketCapData.total.color,
             pointBorderColor: '#000',
-            pointBorderWidth: 2
+            pointBorderWidth: 2,
+            spanGaps: false
         }]
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 2.8,
-        plugins: {
-            legend: {
-                display: false
+options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 2.0,
+    layout: {
+        padding: {
+            left: 0,
+            right: 0,
+            top: 5,
+            bottom: 0
+        }
+    },
+    plugins: {
+        legend: {
+            display: false
+        },
+        tooltip: {
+            mode: 'index',
+            intersect: false,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            titleColor: '#ff4500',
+            bodyColor: '#ffffff',
+            borderColor: '#ff4500',
+            borderWidth: 2,
+            padding: 12
+        }
+    },
+    scales: {
+        y: {
+            beginAtZero: true,
+            ticks: {
+                color: '#ffffff',
+                font: { size: 12, weight: 'bold' },
+                callback: function(value) {
+                    return '$' + value + 'T';
+                }
             },
-            tooltip: {
-                mode: 'index',
-                intersect: false,
-                backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                titleColor: '#ff4500',
-                bodyColor: '#ffffff',
-                borderColor: '#ff4500',
-                borderWidth: 2,
-                padding: 12
+            grid: {
+                color: '#333333',
+                lineWidth: 1
             }
         },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: '#ffffff',
-                    font: { size: 12, weight: 'bold' },
-                    callback: function(value) {
-                        return '$' + value + 'T';
-                    }
-                },
-                grid: {
-                    color: '#333333',
-                    lineWidth: 1
-                }
+        x: {
+            offset: false,
+            ticks: {
+                color: '#ffffff',
+                font: { size: 12, weight: 'bold' },
+                maxRotation: 0,
+                minRotation: 0,
+                autoSkip: false
             },
-            x: {
-                ticks: {
-                    color: '#ffffff',
-                    font: { size: 12, weight: 'bold' }
-                },
-                grid: {
-                    color: '#333333',
-                    lineWidth: 1
-                }
+            grid: {
+                color: '#333333',
+                lineWidth: 1,
+                offset: false,
+                drawBorder: true,
+                drawOnChartArea: true
             }
         }
     }
+}
 });
 
 // Button Click Handlers
