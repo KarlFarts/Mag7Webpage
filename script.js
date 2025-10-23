@@ -300,9 +300,9 @@ document.addEventListener('click', (e) => {
         const toggleTitle = e.target;
         const collapsibleContent = toggleTitle.nextElementSibling;
         collapsibleContent.classList.toggle('collapsed');
-        const isCollapsed = collapsibleContent.classList.contains('collapsed');
-        const currentText = toggleTitle.textContent;
-        toggleTitle.textContent = (isCollapsed ? '▼ ' : '▲ ') + currentText;
+        
+        // Toggle the arrow class instead of manipulating text
+        toggleTitle.classList.toggle('expanded');
     }
 });
 
