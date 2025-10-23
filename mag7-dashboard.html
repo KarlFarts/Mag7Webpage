@@ -28,14 +28,14 @@
             background: #000000;
             color: #ffffff;
             overflow-x: hidden;
-            min-width: 1400px;
+            min-width: 1200px;
         }
 
         .header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px 0 15px 0;
+            padding: 10px 0 10px 0;
             background: #000000;
             position: relative;
             z-index: 5;
@@ -61,20 +61,12 @@
             position: relative;
         }
 
-        .total-wealth-container {
-            position: fixed;
-            left: 260px;
-            right: 420px;
-            top: 160px;
-            width: auto;
-            z-index: 150;
-        }
 
         .sidebar {
             position: fixed;
             left: 20px;
             top: 240px;
-            width: 220px;
+            width: 200px;
             z-index: 150;
         }
 
@@ -122,15 +114,15 @@
         }
 
         .content-area {
-            margin-left: 260px;
-            margin-right: 420px;
+            margin-left: 240px;
+            margin-right: 280px;
             max-width: none;
-            margin-top: 100px;
+            margin-top: 40px;
         }
 
         .chart-section {
             width: 100%;
-            margin: 0 auto 20px;
+            margin: 0 auto 0;
             padding: 0;
             background: transparent;
             border-radius: 0;
@@ -186,21 +178,21 @@
         .explainer-box {
             position: fixed;
             right: 20px;
-            top: 120px;
-            width: 380px;
+            top: 240px;
+            width: 260px;
             background: var(--brutal-gray);
             border: 4px solid var(--brutal-red);
             border-radius: 0;
-            padding: 20px;
+            padding: 12px 20px;
             box-shadow: none;
             z-index: 150;
-            max-height: 2000px;
-            overflow: hidden;
+            height: calc(100vh - 300px);
+            overflow-y: auto;
             transition: max-height 0.3s ease;
         }
 
         .explainer-box.collapsed {
-            max-height: 60px;
+            height: 60px;
         }
 
         .explainer-title {
@@ -208,7 +200,7 @@
             color: var(--brutal-red);
             font-weight: 900;
             margin-top: 0;
-            margin-bottom: 35px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -218,6 +210,7 @@
             padding-bottom: 15px;
             cursor: pointer;
             word-wrap: break-word;
+            line-height: 1.2;
         }
 
         .danger-content {
@@ -232,8 +225,8 @@
             color: #ffffff;
             font-size: 1.2em;
             font-weight: 900;
-            margin-bottom: 25px;
-            margin-top: 15px;
+            margin-bottom: 15px;
+            margin-top: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -250,13 +243,13 @@
         }
 
         .danger-list li {
-            padding: 20px 0 20px 50px;
+            padding: 12px 0 12px 50px;
             position: relative;
             border-bottom: 2px solid var(--brutal-border);
-            line-height: 1.8;
+            line-height: 1.5;
             margin-bottom: 0;
             transition: all 0.1s ease;
-            font-size: 13px;
+            font-size: 12px;
             word-wrap: break-word;
             color: #ffffff;
             background: transparent;
@@ -276,17 +269,17 @@
             content: '▲';
             position: absolute;
             left: 20px;
-            top: 20px;
+            top: 15px;
             font-size: 1em;
             color: var(--brutal-red);
         }
 
         .danger-list li strong {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 900;
             color: var(--brutal-red);
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.4;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -308,77 +301,22 @@
             letter-spacing: 0.5px;
         }
 
-        .sources-section {
-            margin-left: 260px;
-            margin-right: 420px;
-            margin-top: 20px;
-            margin-bottom: 80px;
-            padding: 20px;
-            background: var(--brutal-gray);
-            border-radius: 0;
-            border: 4px solid var(--brutal-border);
-        }
-
-        .sources-title {
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-align: left;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-left: 4px solid var(--brutal-red);
-            padding-left: 10px;
-        }
-
-        .sources-list {
-            font-size: 0.8em;
-            color: #ffffff;
-            line-height: 1.6;
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .sources-list li {
-            margin-bottom: 10px;
-            padding-left: 15px;
-            position: relative;
-        }
-
-        .sources-list li::before {
-            content: '•';
-            color: var(--brutal-red);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .sources-list a {
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .sources-list a:hover {
-            color: var(--brutal-red);
-            text-decoration: underline;
-        }
 
         .ticker {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            position: relative;
             width: 100%;
             background: var(--brutal-gray);
             border-top: 4px solid var(--brutal-red);
             padding: 8px 0;
             z-index: 200;
             overflow: hidden;
+            margin-top: 30px;
         }
 
         .ticker-content {
             display: flex;
+            justify-content: center;
             white-space: nowrap;
-            animation: scroll 30s linear infinite;
         }
 
         .ticker-item {
@@ -401,16 +339,8 @@
             color: var(--brutal-red);
         }
 
-        @keyframes scroll {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
 
-        @media (max-width: 1400px) {
+        @media (max-width: 1200px) {
             body {
                 min-width: auto;
             }
@@ -463,15 +393,13 @@
             </div>
         </div>
 
-        <div class="total-wealth-container">
-            <div class="company-button active" data-company="total" data-stock="OUR">
-                <div class="button-icon">📊</div>
-                <div class="button-name">TOTAL WEALTH</div>
-            </div>
-        </div>
 
         <div class="sidebar">
             <div class="buttons-container">
+                <div class="company-button active" data-company="total" data-stock="OUR">
+                    <div class="button-icon">📊</div>
+                    <div class="button-name">TOTAL WEALTH</div>
+                </div>
                 <div class="company-button" data-company="apple" data-stock="AAPL">
                     <div class="button-icon">🍎</div>
                     <div class="button-name">Apple</div>
@@ -511,9 +439,13 @@
                     <canvas id="marketCapChart"></canvas>
                 </div>
             </div>
-        </div>
-
-        <div class="explainer-box collapsed">
+    
+            <div class="ticker">
+                <div class="ticker-content">
+                </div>
+            </div>
+    
+            <div class="explainer-box collapsed">
             <div class="explainer-title">
                 <span id="dangerTitle">▼ WHAT IS THE MAGNIFICENT SEVEN?</span>
             </div>
@@ -595,109 +527,7 @@
             </div>
         </div>
 
-        <div class="sources-section">
-            <div class="sources-title">📚 SOURCES & REFERENCES</div>
-            <ul class="sources-list">
-                <li><strong>Primary Data Sources:</strong> Voronoi App, Macrotrends, CompaniesMarketCap, Yahoo Finance, company SEC filings (10-K, 10-Q)</li>
-                <li>Voronoi App: Magnificent Seven Market Cap Reaches Record $20.9 Trillion (October 2025)</li>
-                <li><strong>NVIDIA $4T Milestone:</strong> Investopedia (July 9, 2025) - First company to reach $4T intraday valuation</li>
-                <li><strong>Market Data:</strong> October 2025 market cap figures from real-time financial data providers</li>
-            </ul>
 
-            <div class="milestone">
-                <span class="milestone-date">⚠️ DISCLAIMER:</span> This analysis is for educational and informational purposes only. Not financial advice. Markets are volatile and past performance does not guarantee future results.
-            </div>
-        </div>
-
-        <div class="ticker">
-            <div class="ticker-content">
-                <div class="ticker-item">
-                    <span class="ticker-icon">🍎</span>
-                    <span>AAPL</span>
-                    <span class="ticker-price">$150</span>
-                    <span>$3.58T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">💻</span>
-                    <span>MSFT</span>
-                    <span class="ticker-price">$300</span>
-                    <span>$4.02T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">🔍</span>
-                    <span>GOOGL</span>
-                    <span class="ticker-price">$140</span>
-                    <span>$3.12T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">📦</span>
-                    <span>AMZN</span>
-                    <span class="ticker-price">$130</span>
-                    <span>$2.15T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">🎮</span>
-                    <span>NVDA</span>
-                    <span class="ticker-price">$500</span>
-                    <span>$3.95T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">👤</span>
-                    <span>META</span>
-                    <span class="ticker-price">$300</span>
-                    <span>$1.48T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">⚡</span>
-                    <span>TSLA</span>
-                    <span class="ticker-price">$200</span>
-                    <span>$1.60T</span>
-                </div>
-                <!-- Repeat for continuous scroll -->
-                <div class="ticker-item">
-                    <span class="ticker-icon">🍎</span>
-                    <span>AAPL</span>
-                    <span class="ticker-price">$150</span>
-                    <span>$3.58T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">💻</span>
-                    <span>MSFT</span>
-                    <span class="ticker-price">$300</span>
-                    <span>$4.02T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">🔍</span>
-                    <span>GOOGL</span>
-                    <span class="ticker-price">$140</span>
-                    <span>$3.12T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">📦</span>
-                    <span>AMZN</span>
-                    <span class="ticker-price">$130</span>
-                    <span>$2.15T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">🎮</span>
-                    <span>NVDA</span>
-                    <span class="ticker-price">$500</span>
-                    <span>$3.95T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">👤</span>
-                    <span>META</span>
-                    <span class="ticker-price">$300</span>
-                    <span>$1.48T</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-icon">⚡</span>
-                    <span>TSLA</span>
-                    <span class="ticker-price">$200</span>
-                    <span>$1.60T</span>
-                </div>
-            </div>
-        </div>
     </div>
     
     <script>
@@ -826,6 +656,43 @@
         const watermark = document.querySelector('.watermark');
         const explainerBox = document.querySelector('.explainer-box');
         const explainerTitle = document.querySelector('.explainer-title');
+        const tickerContent = document.querySelector('.ticker-content');
+
+        const tickerData = {
+            apple: [{ icon: '🍎', symbol: 'AAPL', price: '$150', cap: '$3.58T' }],
+            microsoft: [{ icon: '💻', symbol: 'MSFT', price: '$300', cap: '$4.02T' }],
+            google: [{ icon: '🔍', symbol: 'GOOGL', price: '$140', cap: '$3.12T' }],
+            amazon: [{ icon: '📦', symbol: 'AMZN', price: '$130', cap: '$2.15T' }],
+            nvidia: [{ icon: '🎮', symbol: 'NVDA', price: '$500', cap: '$3.95T' }],
+            meta: [{ icon: '👤', symbol: 'META', price: '$300', cap: '$1.48T' }],
+            tesla: [{ icon: '⚡', symbol: 'TSLA', price: '$200', cap: '$1.60T' }],
+            total: [
+                { icon: '🍎', symbol: 'AAPL', price: '$150', cap: '$3.58T' },
+                { icon: '💻', symbol: 'MSFT', price: '$300', cap: '$4.02T' },
+                { icon: '🔍', symbol: 'GOOGL', price: '$140', cap: '$3.12T' },
+                { icon: '📦', symbol: 'AMZN', price: '$130', cap: '$2.15T' },
+                { icon: '🎮', symbol: 'NVDA', price: '$500', cap: '$3.95T' },
+                { icon: '👤', symbol: 'META', price: '$300', cap: '$1.48T' },
+                { icon: '⚡', symbol: 'TSLA', price: '$200', cap: '$1.60T' }
+            ]
+        };
+
+        function updateTicker(company) {
+            const data = tickerData[company];
+            tickerContent.innerHTML = '';
+
+            data.forEach(item => {
+                const tickerItem = document.createElement('div');
+                tickerItem.className = 'ticker-item';
+                tickerItem.innerHTML = `
+                    <span class="ticker-icon">${item.icon}</span>
+                    <span>${item.symbol}</span>
+                    <span class="ticker-price">${item.price}</span>
+                    <span>${item.cap}</span>
+                `;
+                tickerContent.appendChild(tickerItem);
+            });
+        }
         
         buttons.forEach(button => {
             button.addEventListener('click', () => {
@@ -844,15 +711,17 @@
                 chart.data.datasets[0].backgroundColor = hexToRgba(data.color, 0.1);
                 chart.data.datasets[0].pointBackgroundColor = data.color;
 
+                updateTicker(company);
+
                 if (company === 'total') {
                     dynamicTitle.textContent = 'OUR Combined Market Capitalization';
-                    dangerTitle.textContent = '▲ WHAT IS THE MAGNIFICENT SEVEN?';
+                    dangerTitle.textContent = '▼ WHAT IS THE MAGNIFICENT SEVEN?';
                     watermark.classList.add('visible');
                 } else {
                     const stockCode = button.dataset.stock;
                     dynamicTitle.textContent = `${stockCode}'s Market Capitalization`;
                     const companyName = button.querySelector('.button-name').textContent;
-                    dangerTitle.textContent = `▲ RISKS & DANGERS: ${companyName.toUpperCase()}`;
+                    dangerTitle.textContent = `▼ RISKS & DANGERS: ${companyName.toUpperCase()}`;
                     watermark.classList.remove('visible');
                 }
 
@@ -865,6 +734,9 @@
             const isCollapsed = explainerBox.classList.contains('collapsed');
             dangerTitle.textContent = isCollapsed ? '▼ ' + dangerTitle.textContent.substring(2) : '▲ ' + dangerTitle.textContent.substring(2);
         });
+
+        // Initialize ticker with total data
+        updateTicker('total');
     </script>
 </body>
 </html>
