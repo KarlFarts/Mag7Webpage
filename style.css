@@ -1,0 +1,367 @@
+:root {
+    --brutal-red: #ff4500;
+    --brutal-dark: #000000;
+    --brutal-gray: #1a1a1a;
+    --brutal-border: #333333;
+    --brutal-text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background: #000000;
+    color: #ffffff;
+    overflow-x: hidden;
+    min-width: 1200px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 10px 0;
+    background: #000000;
+    position: relative;
+    z-index: 5;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.title h1 {
+    font-size: 64px;
+    color: #ffffff;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: center;
+    text-shadow: none;
+}
+
+.page-container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+.sidebar {
+    position: fixed;
+    left: 20px;
+    top: 240px;
+    width: 200px;
+    z-index: 150;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.company-button {
+    background: var(--brutal-gray);
+    border: 3px solid var(--brutal-border);
+    border-radius: 0;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+}
+
+.company-button:hover {
+    border-color: var(--brutal-red);
+    transform: translateX(8px);
+    background: #000000;
+}
+
+.company-button.active {
+    background: #000000;
+    border-color: var(--brutal-red);
+    border-width: 4px;
+}
+
+.button-icon {
+    font-size: 1.2em;
+}
+
+.button-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.content-area {
+    margin-left: 240px;
+    margin-right: 280px;
+    max-width: none;
+    margin-top: 40px;
+}
+
+.chart-section {
+    width: 100%;
+    margin: 0 auto 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.chart-container {
+    background: #000000;
+    width: 100%;
+    max-width: 100%;
+    height: 380px;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    box-sizing: border-box;
+}
+
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: auto;
+    opacity: 0.15;
+    z-index: 1;
+    pointer-events: none;
+    display: none;
+}
+
+.watermark.visible {
+    display: block;
+}
+
+.chart-title {
+    font-size: 18px;
+    color: var(--brutal-red);
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: left;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 6px solid var(--brutal-red);
+    padding-left: 15px;
+}
+
+#marketCapChart {
+    position: relative;
+    z-index: 10;
+}
+
+.explainer-box {
+    position: fixed;
+    right: 20px;
+    top: 240px;
+    width: 260px;
+    background: var(--brutal-gray);
+    border: 4px solid var(--brutal-red);
+    border-radius: 0;
+    padding: 12px 20px;
+    box-shadow: none;
+    z-index: 150;
+    height: calc(100vh - 300px);
+    overflow-y: auto;
+    transition: height 0.3s ease;
+}
+
+.explainer-box.collapsed {
+    height: 60px;
+    overflow: hidden;
+}
+
+.explainer-title {
+    font-size: 16px;
+    color: var(--brutal-red);
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 3px solid var(--brutal-red);
+    padding-bottom: 15px;
+    cursor: pointer;
+    word-wrap: break-word;
+    line-height: 1.2;
+}
+
+.danger-content {
+    display: none;
+}
+
+.danger-content.active {
+    display: block;
+}
+
+.danger-content h3 {
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: 900;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.danger-content p {
+    margin-bottom: 30px;
+    line-height: 1.9;
+    color: #f5f5f5;
+}
+
+.danger-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.danger-list li {
+    padding: 12px 0 12px 50px;
+    position: relative;
+    border-bottom: 2px solid var(--brutal-border);
+    line-height: 1.5;
+    margin-bottom: 0;
+    transition: all 0.1s ease;
+    font-size: 12px;
+    word-wrap: break-word;
+    color: #ffffff;
+    background: transparent;
+}
+
+.danger-list li:hover {
+    background: #000000;
+    border-left: 4px solid var(--brutal-red);
+    padding-left: 46px;
+}
+
+.danger-list li:last-child {
+    border-bottom: none;
+}
+
+.danger-list li::before {
+    content: '▲';
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    font-size: 1em;
+    color: var(--brutal-red);
+}
+
+.danger-list li strong {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--brutal-red);
+    display: block;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.milestone {
+    background: #000000;
+    padding: 15px 20px;
+    border-left: 6px solid var(--brutal-red);
+    margin: 20px 0;
+    font-size: 0.9em;
+    color: #ffffff;
+}
+
+.milestone-date {
+    color: var(--brutal-red);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ticker {
+    position: relative;
+    width: 100%;
+    background: var(--brutal-gray);
+    border-top: 4px solid var(--brutal-red);
+    padding: 8px 0;
+    z-index: 200;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.ticker-content {
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 50px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ticker-item .ticker-icon {
+    font-size: 1.2em;
+}
+
+.ticker-item .ticker-price {
+    color: var(--brutal-red);
+}
+
+@media (max-width: 1200px) {
+    body {
+        min-width: auto;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        max-width: 1200px;
+        margin: 30px auto;
+    }
+
+    .buttons-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .content-area {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1200px;
+    }
+
+    .explainer-box {
+        position: static;
+        width: 100%;
+        max-width: 1200px;
+        margin: 60px auto;
+    }
+
+    .header {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}

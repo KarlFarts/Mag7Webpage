@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magnificent Seven - Market Power & Danger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-container">
+        <div class="header">
+            <div class="title">
+                <h1>The Magnificent 7</h1>
+                <h2 style="font-size: 32px; color: #ffffff; font-weight: 700; text-transform: uppercase; margin-top: 10px;">We Control Your Life!</h2>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="buttons-container">
+                <div class="company-button active" data-company="total" data-stock="OUR">
+                    <div class="button-icon">📊</div>
+                    <div class="button-name">TOTAL WEALTH</div>
+                </div>
+                <div class="company-button" data-company="apple" data-stock="AAPL">
+                    <div class="button-icon">🍎</div>
+                    <div class="button-name">Apple</div>
+                </div>
+                <div class="company-button" data-company="microsoft" data-stock="MSFT">
+                    <div class="button-icon">💻</div>
+                    <div class="button-name">Microsoft</div>
+                </div>
+                <div class="company-button" data-company="google" data-stock="GOOGL">
+                    <div class="button-icon">🔍</div>
+                    <div class="button-name">Alphabet</div>
+                </div>
+                <div class="company-button" data-company="amazon" data-stock="AMZN">
+                    <div class="button-icon">📦</div>
+                    <div class="button-name">Amazon</div>
+                </div>
+                <div class="company-button" data-company="nvidia" data-stock="NVDA">
+                    <div class="button-icon">🎮</div>
+                    <div class="button-name">NVIDIA</div>
+                </div>
+                <div class="company-button" data-company="meta" data-stock="META">
+                    <div class="button-icon">👤</div>
+                    <div class="button-name">Meta</div>
+                </div>
+                <div class="company-button" data-company="tesla" data-stock="TSLA">
+                    <div class="button-icon">⚡</div>
+                    <div class="button-name">Tesla</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="chart-title" id="dynamicTitle">OUR Combined Market Capitalization</div>
+            <div class="chart-section">
+                <div class="chart-container">
+                    <img src="assets/skull_cash_logo.png" alt="Skull Cash Logo Watermark" class="watermark">
+                    <canvas id="marketCapChart"></canvas>
+                </div>
+            </div>
+    
+            <div class="ticker">
+                <div class="ticker-content">
+                </div>
+            </div>
+    
+            <div class="explainer-box collapsed">
+                <div class="explainer-title">
+                    <span id="dangerTitle">▼ WHAT IS THE MAGNIFICENT SEVEN?</span>
+                </div>
+                
+                <div class="danger-content active" id="danger-total">
+                    <p style="margin-bottom: 20px; line-height: 1.8;">
+                        The "Magnificent Seven" refers to the seven largest technology companies by market capitalization: Apple, Microsoft, Alphabet (Google), Amazon, NVIDIA, Meta (Facebook), and Tesla. As of October 2025, these companies collectively represent over <strong style="color: #ff4500;">$20.9 trillion in market value</strong> — roughly <strong style="color: #ff4500;">40% of the entire S&P 500</strong>.
+                    </p>
+                    
+                    <h3>▲ SYSTEMIC RISKS & MARKET CONCENTRATION</h3>
+                    <ul class="danger-list">
+                        <li><strong>INDEX CONCENTRATION RISK:</strong> The Magnificent Seven account for approximately 40% of S&P 500 market cap, meaning passive index investors are heavily concentrated in just 7 stocks</li>
+                        <li><strong>CORRELATION DANGER:</strong> When these stocks move together, they can create massive market swings affecting millions of retirement accounts and institutional portfolios</li>
+                        <li><strong>VALUATION DISCONNECT:</strong> Combined market cap exceeds the GDP of every country except the US and China, raising questions about sustainable valuations</li>
+                    </ul>
+                </div>
+                
+                <div class="danger-content" id="danger-apple">
+                    <h3>▲ APPLE INC. (AAPL) - MARKET CAP: $3.58T</h3>
+                    <ul class="danger-list">
+                        <li><strong>IPHONE DEPENDENCY:</strong> Over 50% of revenue from iPhone sales; any slowdown in smartphone market directly threatens core business</li>
+                        <li><strong>CHINA EXPOSURE:</strong> 19% of revenue from Greater China; manufacturing heavily dependent on Chinese factories</li>
+                        <li><strong>APP STORE UNDER FIRE:</strong> EU regulations and US lawsuits threaten the 30% App Store commission model worth tens of billions annually</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-microsoft">
+                    <h3>▲ MICROSOFT (MSFT) - MARKET CAP: $4.02T</h3>
+                    <ul class="danger-list">
+                        <li><strong>OPENAI INVESTMENT RISK:</strong> $13+ billion invested in OpenAI with unclear path to monetization</li>
+                        <li><strong>CLOUD COMPETITION:</strong> AWS and Google Cloud gaining ground; Azure growth slowing from 50%+ to 30% year-over-year</li>
+                        <li><strong>AI COSTS EXPLODING:</strong> Massive infrastructure spending on AI with uncertain returns</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-google">
+                    <h3>▲ ALPHABET/GOOGLE (GOOGL) - MARKET CAP: $3.12T</h3>
+                    <ul class="danger-list">
+                        <li><strong>DOJ ANTITRUST CASE:</strong> Department of Justice ruling could force Google to divest Chrome, Android, or ad business</li>
+                        <li><strong>SEARCH DISRUPTION:</strong> ChatGPT, Perplexity, and AI search engines threatening Google's 90%+ search monopoly</li>
+                        <li><strong>AD REVENUE VULNERABILITY:</strong> 80% of revenue from advertising; economic downturns directly impact core business</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-amazon">
+                    <h3>▲ AMAZON (AMZN) - MARKET CAP: $2.15T</h3>
+                    <ul class="danger-list">
+                        <li><strong>RETAIL MARGINS RAZOR-THIN:</strong> E-commerce operates at 2-3% margins; any economic pressure destroys profitability</li>
+                        <li><strong>AWS GROWTH SLOWING:</strong> Cloud business that generates most profits seeing growth deceleration as market matures</li>
+                        <li><strong>LABOR PRESSURE:</strong> Warehouse worker strikes, unionization efforts, and wage increases threatening cost structure</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-nvidia">
+                    <h3>▲ NVIDIA (NVDA) - MARKET CAP: $3.95T</h3>
+                    <ul class="danger-list">
+                        <li><strong>AI BUBBLE EXPOSURE:</strong> Stock price assumes AI revolution continues indefinitely; any slowdown could trigger 50%+ correction</li>
+                        <li><strong>CUSTOMER CONCENTRATION:</strong> Handful of hyperscalers account for majority of sales; if they build own chips, NVIDIA collapses</li>
+                        <li><strong>CHINA EXPORT RESTRICTIONS:</strong> US government bans eliminate 25% of addressable market</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-meta">
+                    <h3>▲ META PLATFORMS (META) - MARKET CAP: $1.48T</h3>
+                    <ul class="danger-list">
+                        <li><strong>METAVERSE MONEY PIT:</strong> Reality Labs losing $40+ billion annually with no path to profitability</li>
+                        <li><strong>YOUTH EXODUS:</strong> Teenagers abandoning Facebook and Instagram for TikTok, Snapchat, and BeReal</li>
+                        <li><strong>APPLE PRIVACY CHANGES:</strong> iOS privacy updates cost Meta $10+ billion in ad revenue annually</li>
+                    </ul>
+                </div>
+
+                <div class="danger-content" id="danger-tesla">
+                    <h3>▲ TESLA (TSLA) - MARKET CAP: $1.60T</h3>
+                    <ul class="danger-list">
+                        <li><strong>VALUATION ASSUMES ROBOTAXIS:</strong> Current price requires Full Self-Driving to work and robotaxi fleet to materialize</li>
+                        <li><strong>COMPETITION TSUNAMI:</strong> Every major automaker now producing competitive EVs; Tesla's technological lead evaporating</li>
+                        <li><strong>MARGIN COMPRESSION:</strong> Forced to cut prices repeatedly to compete; automotive margins falling from 30% to low 20s</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
