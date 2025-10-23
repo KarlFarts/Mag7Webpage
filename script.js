@@ -117,198 +117,204 @@ function updateInfoBox(company) {
     infoContent.appendChild(companyItem);
 }
 
-// Initialize Chart
-const ctx = document.getElementById('marketCapChart').getContext('2d');
-let chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: marketCapData.total.labels,
-        datasets: [{
-            label: 'Combined Market Cap',
-            data: marketCapData.total.data,
-            borderColor: marketCapData.total.color,
-            backgroundColor: hexToRgba(marketCapData.total.color, 0.1),
-            borderWidth: 3,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 6,
-            pointHoverRadius: 8,
-            pointBackgroundColor: marketCapData.total.color,
-            pointBorderColor: '#000',
-            pointBorderWidth: 2,
-            spanGaps: false
-        }]
-    },
-options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    aspectRatio: 2.0,
-    animation: {
-        duration: 1000,
-        easing: 'easeInOutQuart'
-    },
-    transitions: {
-        active: {
-            animation: {
-                duration: 800
-            }
-        }
-    },
-    layout: {
-        padding: {
-            left: 0,
-            right: 0,
-            top: 5,
-            bottom: 0
-        }
-    },
-    plugins: {
-        legend: {
-            display: false
+// Global chart variable
+let chart;
+
+// Function to create chart for a specific company
+function createChart(company) {
+    const ctx = document.getElementById('marketCapChart').getContext('2d');
+    const data = marketCapData[company];
+    const maxVal = Math.max(...data.data);
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: company === 'total' ? 'Combined Market Cap' : `${company.charAt(0).toUpperCase() + company.slice(1)} Market Cap`,
+                data: data.data,
+                borderColor: data.color,
+                backgroundColor: hexToRgba(data.color, 0.1),
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                pointBackgroundColor: data.color,
+                pointBorderColor: '#000',
+                pointBorderWidth: 2,
+                spanGaps: false
+            }]
         },
-        tooltip: {
-            mode: 'index',
-            intersect: false,
-            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-            titleColor: '#ff4500',
-            bodyColor: '#ffffff',
-            borderColor: '#ff4500',
-            borderWidth: 2,
-            padding: 12,
-            callbacks: {
-                label: function(context) {
-                    let value = context.parsed.y;
-                    return '$' + (value * 1000000000000).toLocaleString();
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2.0,
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart'
+            },
+            transitions: {
+                active: {
+                    animation: {
+                        duration: 800
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 5,
+                    bottom: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    titleColor: '#ff4500',
+                    bodyColor: '#ffffff',
+                    borderColor: '#ff4500',
+                    borderWidth: 2,
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            let value = context.parsed.y;
+                            return '$' + (value * 1000000000000).toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: maxVal + 0.5,
+                    ticks: {
+                        color: '#ffffff',
+                        font: { size: 10, weight: 'bold' },
+                        callback: function(value) {
+                            return '$' + (value * 1000000000000).toLocaleString();
+                        },
+                        stepSize: maxVal > 10 ? 3 : 0.5
+                    },
+                    grid: {
+                        color: '#333333',
+                        lineWidth: 1
+                    }
+                },
+                x: {
+                    offset: false,
+                    ticks: {
+                        color: '#ffffff',
+                        font: { size: 12, weight: 'bold' },
+                        maxRotation: 0,
+                        minRotation: 0,
+                        autoSkip: false
+                    },
+                    grid: {
+                        color: '#333333',
+                        lineWidth: 1,
+                        offset: false,
+                        drawBorder: true,
+                        drawOnChartArea: true
+                    }
                 }
             }
         }
-    },
-    scales: {
-        y: {
-            beginAtZero: true,
-            max: 21,
-            ticks: {
-                color: '#ffffff',
-                font: { size: 10, weight: 'bold' },
-                callback: function(value) {
-                    return '$' + (value * 1000000000000).toLocaleString();
-                },
-                stepSize: 3
-            },
-            grid: {
-                color: '#333333',
-                lineWidth: 1
-            }
-        },
-        x: {
-            offset: false,
-            ticks: {
-                color: '#ffffff',
-                font: { size: 12, weight: 'bold' },
-                maxRotation: 0,
-                minRotation: 0,
-                autoSkip: false
-            },
-            grid: {
-                color: '#333333',
-                lineWidth: 1,
-                offset: false,
-                drawBorder: true,
-                drawOnChartArea: true
-            }
-        }
-    }
-}
-});
-
-// Button Click Handlers
-const buttons = document.querySelectorAll('.company-button');
-const dangerContents = document.querySelectorAll('.danger-content');
-const dangerTitle = document.getElementById('dangerTitle');
-const dynamicTitle = document.getElementById('dynamicTitle');
-const watermark = document.querySelector('.watermark');
-const explainerBox = document.querySelector('.explainer-box');
-const explainerTitle = document.querySelector('.explainer-title');
-
-const iconMap = {
-    total: 'assets/WHITE skull cash logo.png',
-    apple: 'assets/apple.png',
-    microsoft: 'assets/microsoft.png',
-    google: 'assets/alphabet.png',
-    amazon: 'assets/aws.png',
-    nvidia: 'assets/nvidia.png',
-    meta: 'assets/meta.png',
-    tesla: 'assets/TESLA.png'
-};
-
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const company = button.dataset.company;
-
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        dangerContents.forEach(content => content.classList.remove('active'));
-        document.getElementById(`danger-${company}`).classList.add('active');
-
-        const data = marketCapData[company];
-        chart.data.labels = data.labels;
-        chart.data.datasets[0].data = data.data;
-        chart.data.datasets[0].borderColor = data.color;
-        chart.data.datasets[0].backgroundColor = hexToRgba(data.color, 0.1);
-        chart.data.datasets[0].pointBackgroundColor = data.color;
-
-        updateInfoBox(company);
-
-        // Set dynamic watermark
-        watermark.src = iconMap[company];
-        watermark.classList.add('visible');
-
-        // Apply white filter for Apple logo
-        if (company === 'apple') {
-            watermark.classList.add('white-filter');
-        } else {
-            watermark.classList.remove('white-filter');
-        }
-
-        // Update y-axis scaling based on company
-        if (company === 'total') {
-            chart.options.scales.y.max = 21;
-            chart.options.scales.y.ticks.stepSize = 3;
-        } else {
-            delete chart.options.scales.y.max;
-            chart.options.scales.y.ticks.stepSize = 0.5;
-        }
-
-        if (company === 'total') {
-            dynamicTitle.innerHTML = '<span class="stock-code">OUR</span> Combined Market Capitalization';
-            dangerTitle.textContent = '▼ WHAT IS THE MAGNIFICENT SEVEN?';
-        } else {
-            const stockCode = button.dataset.stock;
-            dynamicTitle.innerHTML = `<span class="stock-code">${stockCode}</span> Market Capitalization`;
-            const companyName = button.querySelector('.button-name').textContent;
-            dangerTitle.textContent = `▼ RISKS & DANGERS: ${companyName.toUpperCase()}`;
-        }
-
-        chart.update('active');
     });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize chart with total data
+    createChart('total');
+
+    // Button Click Handlers
+    const buttons = document.querySelectorAll('.company-button');
+    console.log('Found buttons:', buttons.length);
+
+    const dangerContents = document.querySelectorAll('.danger-content');
+    const dangerTitle = document.getElementById('dangerTitle');
+    const dynamicTitle = document.getElementById('dynamicTitle');
+    const watermark = document.querySelector('.watermark');
+    const explainerBox = document.querySelector('.explainer-box');
+    const explainerTitle = document.querySelector('.explainer-title');
+
+    const iconMap = {
+        total: 'assets/WHITE skull cash logo.png',
+        apple: 'assets/apple.png',
+        microsoft: 'assets/microsoft.png',
+        google: 'assets/alphabet.png',
+        amazon: 'assets/aws.png',
+        nvidia: 'assets/nvidia.png',
+        meta: 'assets/meta.png',
+        tesla: 'assets/TESLA.png'
+    };
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const company = button.dataset.company;
+            console.log('Button clicked for company:', company);
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            dangerContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(`danger-${company}`).classList.add('active');
+
+            // Destroy existing chart and create new one with company data
+            console.log('Before chart destroy/update');
+            if (chart) {
+                chart.destroy();
+            }
+            createChart(company);
+            console.log('After chart creation for:', company);
+
+            updateInfoBox(company);
+
+            // Set dynamic watermark
+            watermark.src = iconMap[company];
+            watermark.classList.add('visible');
+
+            // Apply white filter for Apple logo
+            if (company === 'apple') {
+                watermark.classList.add('white-filter');
+            } else {
+                watermark.classList.remove('white-filter');
+            }
+
+            if (company === 'total') {
+                dynamicTitle.innerHTML = '<span class="stock-code">OUR</span> Combined Market Capitalization';
+                dangerTitle.textContent = '▼ WHAT IS THE MAGNIFICENT SEVEN?';
+            } else {
+                const stockCode = button.dataset.stock;
+                dynamicTitle.innerHTML = `<span class="stock-code">${stockCode}</span> Market Capitalization`;
+                const companyName = button.querySelector('.button-name').textContent;
+                dangerTitle.textContent = `▼ RISKS & DANGERS: ${companyName.toUpperCase()}`;
+            }
+        });
+    });
+
+    // Explainer Box Toggle - Now handles individual collapsible sections
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('explainer-toggle-title')) {
+            const toggleTitle = e.target;
+            const collapsibleContent = toggleTitle.nextElementSibling;
+            collapsibleContent.classList.toggle('collapsed');
+
+            // Toggle the arrow class instead of manipulating text
+            toggleTitle.classList.toggle('expanded');
+        }
+    });
+
+    // Initialize info box with total data
+    updateInfoBox('total');
+
+    // Initialize watermark with white skull logo for default total view
+    watermark.src = 'assets/WHITE skull cash logo.png';
+    watermark.classList.add('visible');
 });
-
-// Explainer Box Toggle - Now handles individual collapsible sections
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('explainer-toggle-title')) {
-        const toggleTitle = e.target;
-        const collapsibleContent = toggleTitle.nextElementSibling;
-        collapsibleContent.classList.toggle('collapsed');
-        
-        // Toggle the arrow class instead of manipulating text
-        toggleTitle.classList.toggle('expanded');
-    }
-});
-
-// Initialize info box with total data
-updateInfoBox('total');
-
-// Initialize watermark with white skull logo for default total view
-watermark.src = 'assets/WHITE skull cash logo.png';
-watermark.classList.add('visible');
