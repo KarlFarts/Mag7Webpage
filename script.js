@@ -42,21 +42,21 @@ const marketCapData = {
 };
 
 const tickerData = {
-    apple: [{ icon: '🍎', symbol: 'AAPL', price: '$150', cap: '$3.58T' }],
-    microsoft: [{ icon: '💻', symbol: 'MSFT', price: '$300', cap: '$4.02T' }],
-    google: [{ icon: '🔍', symbol: 'GOOGL', price: '$140', cap: '$3.12T' }],
-    amazon: [{ icon: '📦', symbol: 'AMZN', price: '$130', cap: '$2.15T' }],
-    nvidia: [{ icon: '🎮', symbol: 'NVDA', price: '$500', cap: '$3.95T' }],
-    meta: [{ icon: '👤', symbol: 'META', price: '$300', cap: '$1.48T' }],
-    tesla: [{ icon: '⚡', symbol: 'TSLA', price: '$200', cap: '$1.60T' }],
+    apple: [{ icon: '<img src="assets/apple.png" alt="Apple logo" class="ticker-logo">', symbol: 'AAPL', price: '$150', cap: '$3.58T' }],
+    microsoft: [{ icon: '<img src="assets/microsoft.png" alt="Microsoft logo" class="ticker-logo">', symbol: 'MSFT', price: '$300', cap: '$4.02T' }],
+    google: [{ icon: '<img src="assets/placeholder.txt" alt="Google logo placeholder" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' }],
+    amazon: [{ icon: '<img src="assets/aws.png" alt="Amazon Web Services logo" class="ticker-logo">', symbol: 'AMZN', price: '$130', cap: '$2.15T' }],
+    nvidia: [{ icon: '<img src="assets/nvidia.png" alt="NVIDIA logo" class="ticker-logo">', symbol: 'NVDA', price: '$500', cap: '$3.95T' }],
+    meta: [{ icon: '<img src="assets/meta.png" alt="Meta logo" class="ticker-logo">', symbol: 'META', price: '$300', cap: '$1.48T' }],
+    tesla: [{ icon: '<img src="assets/TESLA.png" alt="Tesla logo" class="ticker-logo">', symbol: 'TSLA', price: '$200', cap: '$1.60T' }],
     total: [
-        { icon: '🍎', symbol: 'AAPL', price: '$150', cap: '$3.58T' },
-        { icon: '💻', symbol: 'MSFT', price: '$300', cap: '$4.02T' },
-        { icon: '🔍', symbol: 'GOOGL', price: '$140', cap: '$3.12T' },
-        { icon: '📦', symbol: 'AMZN', price: '$130', cap: '$2.15T' },
-        { icon: '🎮', symbol: 'NVDA', price: '$500', cap: '$3.95T' },
-        { icon: '👤', symbol: 'META', price: '$300', cap: '$1.48T' },
-        { icon: '⚡', symbol: 'TSLA', price: '$200', cap: '$1.60T' }
+        { icon: '<img src="assets/apple.png" alt="Apple logo" class="ticker-logo">', symbol: 'AAPL', price: '$150', cap: '$3.58T' },
+        { icon: '<img src="assets/microsoft.png" alt="Microsoft logo" class="ticker-logo">', symbol: 'MSFT', price: '$300', cap: '$4.02T' },
+        { icon: '<img src="assets/placeholder.txt" alt="Google logo placeholder" class="ticker-logo">', symbol: 'GOOGL', price: '$140', cap: '$3.12T' },
+        { icon: '<img src="assets/aws.png" alt="Amazon Web Services logo" class="ticker-logo">', symbol: 'AMZN', price: '$130', cap: '$2.15T' },
+        { icon: '<img src="assets/nvidia.png" alt="NVIDIA logo" class="ticker-logo">', symbol: 'NVDA', price: '$500', cap: '$3.95T' },
+        { icon: '<img src="assets/meta.png" alt="Meta logo" class="ticker-logo">', symbol: 'META', price: '$300', cap: '$1.48T' },
+        { icon: '<img src="assets/TESLA.png" alt="Tesla logo" class="ticker-logo">', symbol: 'TSLA', price: '$200', cap: '$1.60T' }
     ]
 };
 
@@ -67,22 +67,50 @@ function hexToRgba(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function updateTicker(company) {
-    const data = tickerData[company];
-    const tickerContent = document.querySelector('.ticker-content');
-    tickerContent.innerHTML = '';
+function updateInfoBox(company) {
+    const infoContent = document.querySelector('.info-content');
+    infoContent.innerHTML = '';
 
-    data.forEach(item => {
-        const tickerItem = document.createElement('div');
-        tickerItem.className = 'ticker-item';
-        tickerItem.innerHTML = `
-            <span class="ticker-icon">${item.icon}</span>
-            <span>${item.symbol}</span>
-            <span class="ticker-price">${item.price}</span>
-            <span>${item.cap}</span>
+    if (company === 'total') {
+        // For total view, show combined market cap and key metrics
+        const totalItem = document.createElement('div');
+        totalItem.className = 'info-section';
+        totalItem.innerHTML = `
+            <div class="info-metric">
+                <span class="metric-label">TOTAL MARKET CAP</span>
+                <span class="metric-value">$20.9T</span>
+            </div>
+            <div class="info-metric">
+                <span class="metric-label">S&P 500 SHARE</span>
+                <span class="metric-value">40%</span>
+            </div>
+            <div class="info-metric">
+                <span class="metric-label">GDP EQUIVALENT</span>
+                <span class="metric-value">US + China</span>
+            </div>
         `;
-        tickerContent.appendChild(tickerItem);
-    });
+        infoContent.appendChild(totalItem);
+    } else {
+        // For individual companies, show company-specific metrics
+        const companyData = tickerData[company][0]; // Get first item since individual companies have single entry
+        const companyItem = document.createElement('div');
+        companyItem.className = 'info-section';
+        companyItem.innerHTML = `
+            <div class="info-metric">
+                <span class="metric-label">MARKET CAP</span>
+                <span class="metric-value">${companyData.cap}</span>
+            </div>
+            <div class="info-metric">
+                <span class="metric-label">STOCK SYMBOL</span>
+                <span class="metric-value">${companyData.symbol}</span>
+            </div>
+            <div class="info-metric">
+                <span class="metric-label">CURRENT PRICE</span>
+                <span class="metric-value">${companyData.price}</span>
+            </div>
+        `;
+        infoContent.appendChild(companyItem);
+    }
 }
 
 // Initialize Chart
@@ -196,15 +224,15 @@ buttons.forEach(button => {
         chart.data.datasets[0].backgroundColor = hexToRgba(data.color, 0.1);
         chart.data.datasets[0].pointBackgroundColor = data.color;
 
-        updateTicker(company);
+        updateInfoBox(company);
 
         if (company === 'total') {
-            dynamicTitle.textContent = 'OUR Combined Market Capitalization';
+            dynamicTitle.innerHTML = '<span class="stock-code">OUR</span> Combined Market Capitalization';
             dangerTitle.textContent = '▼ WHAT IS THE MAGNIFICENT SEVEN?';
             watermark.classList.add('visible');
         } else {
             const stockCode = button.dataset.stock;
-            dynamicTitle.textContent = `${stockCode}'s Market Capitalization`;
+            dynamicTitle.innerHTML = `<span class="stock-code">${stockCode}</span> Market Capitalization`;
             const companyName = button.querySelector('.button-name').textContent;
             dangerTitle.textContent = `▼ RISKS & DANGERS: ${companyName.toUpperCase()}`;
             watermark.classList.remove('visible');
@@ -222,5 +250,5 @@ explainerTitle.addEventListener('click', () => {
     dangerTitle.textContent = (isCollapsed ? '▼ ' : '▲ ') + currentText;
 });
 
-// Initialize ticker with total data
-updateTicker('total');
+// Initialize info box with total data
+updateInfoBox('total');

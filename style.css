@@ -26,7 +26,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0 15px 0;
+    padding: 10px 0 10px 0;
     background: #000000;
     position: relative;
     z-index: 5;
@@ -43,6 +43,16 @@ body {
     margin: 0;
     text-align: center;
     text-shadow: none;
+}
+
+.title h2 {
+    font-size: 18px;
+    color: var(--brutal-red);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: -20px;
+    font-style: oblique;
+    text-align: center;
 }
 
 .page-container {
@@ -97,6 +107,16 @@ body {
 
 .button-icon {
     font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Make logos white */
 }
 
 .button-name {
@@ -106,13 +126,14 @@ body {
     letter-spacing: 1.2px;
     text-transform: uppercase;
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 
 .content-area {
     margin-left: 245px;
     margin-right: 290px;
     max-width: none;
-    margin-top: 90px;
+    margin-top: 0;
 }
 
 .chart-section {
@@ -153,17 +174,23 @@ body {
 }
 
 .chart-title {
-    font-size: 18px;
-    color: var(--brutal-red);
+    font-size: 16px;
+    color: #ffffff;
     font-weight: 700;
     margin-bottom: 15px;
-    margin-top: 0;
-    text-align: left;
+    margin-top: 25px;
+    text-align: center;
     padding: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-left: 6px solid var(--brutal-red);
-    padding-left: 15px;
+    font-style: normal;
+    transform: scale(2.5);
+    transform-origin: center;
+}
+
+.stock-code {
+    color: var(--brutal-red);
+    text-decoration: underline;
 }
 
 #marketCapChart {
@@ -307,41 +334,65 @@ body {
     letter-spacing: 0.5px;
 }
 
-.ticker {
+.info-box {
     position: relative;
     width: 100%;
     background: var(--brutal-gray);
-    border-top: 4px solid var(--brutal-red);
-    padding: 8px 0;
-    z-index: 200;
-    overflow: hidden;
+    border: 4px solid var(--brutal-border);
+    border-radius: 0;
+    padding: 16px 20px;
     margin-top: 12px;
-}
-
-.ticker-content {
     display: flex;
-    justify-content: center;
-    white-space: nowrap;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    cursor: default;
+    transition: all 0.2s ease;
 }
 
-.ticker-item {
-    display: inline-flex;
+.info-box:hover {
+    border-color: var(--brutal-red);
+    background: #000000;
+}
+
+.info-content {
+    display: flex;
     align-items: center;
-    gap: 8px;
-    margin-right: 50px;
-    color: #ffffff;
+    gap: 10px;
+    width: 100%;
+}
+
+.info-section {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.info-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.metric-label {
     font-size: 12px;
     font-weight: 700;
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 8px;
+    opacity: 0.8;
 }
 
-.ticker-item .ticker-icon {
-    font-size: 1.2em;
-}
-
-.ticker-item .ticker-price {
+.metric-value {
+    font-size: 18px;
+    font-weight: 900;
     color: var(--brutal-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 @media (max-width: 1200px) {
@@ -360,6 +411,11 @@ body {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 12px;
+    }
+
+    .button-icon img {
+        width: 20px;
+        height: 20px;
     }
 
     .content-area {
